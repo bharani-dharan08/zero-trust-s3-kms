@@ -1,0 +1,12 @@
+# Terraform State & Local Cache
+.terraform/
+*.tfstate
+*.tfstate.backup
+tfplan
+.terraform.lock.hcl
+
+# Sensitive Variables
+terraform.tfvars
+
+# Local Test Files
+test_payload.txt
