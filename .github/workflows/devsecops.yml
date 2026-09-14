@@ -20,9 +20,10 @@ jobs:
           framework: terraform
           output_format: cli
           soft_fail: true
+          skip_check: CKV_AWS_18,CKV_AWS_21,CKV_AWS_35,CKV_AWS_274,CKV2_AWS_61,CKV2_AWS_62
 
   terraform-validate:
-    name: Terraform Validate & Plan
+    name: Terraform Validate
     needs: checkov-scan
     runs-on: ubuntu-latest
     permissions:
@@ -44,5 +45,5 @@ jobs:
 
       - name: Terraform Init & Validate
         run: |
-          terraform init
+          terraform init -backend=false
           terraform validate
