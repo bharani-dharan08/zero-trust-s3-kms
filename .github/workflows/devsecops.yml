@@ -7,35 +7,27 @@ on:
     branches: [ main ]
 
 jobs:
-  checkov-scan:
-    name: Checkov Policy-as-Code Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Run Checkov IaC Scanner
-        uses: bridgecrewio/checkov-action@master
-        continue-on-error: true
-        with:
-          framework: terraform
-          output_format: cli
-          soft_fail: true
-
-  terraform-validate:
-    name: Terraform Validate
-    needs: checkov-scan
+  devsecops-pipeline:
+    name: DevSecOps Policy Scan & Validate
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Run Checkov Security Scan
+        uses: bridgecrewio/checkov-action@master
+        continue-on-error: true
+        with:
+          framework: terraform
+          output_format: cli
+          soft_fail: true
 
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
